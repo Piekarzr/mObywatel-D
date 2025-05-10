@@ -43,12 +43,16 @@
                 ctx.fillText(urlParams.get('gender'), 783, 440); // Zastąp odpowiednimi współrzędnymi
                 ctx.fillText(urlParams.get('expiry-date'), 443, 540); // Zastąp odpowiednimi współrzędnymi
                 ctx.fillText(urlParams.get('can-number'), 923, 635); // Zastąp odpowiednimi współrzędnymi
-
-                const photo = new Image();
-                photo.src = urlParams.get('photo');
-                photo.onload = function() {
-                    ctx.drawImage(photo, 850, 50, 200, 250); // Zastąp odpowiednimi współrzędnymi i rozmiarami
-                };
+                const photoData = localStorage.getItem('edowodPhoto');
+                if(photoData){
+                    const photo = new Image();
+                    photo.onload = function() {
+                        ctx.drawImage(photo, 850, 50, 200, 250); // Zastąp odpowiednimi współrzędnymi i rozmiarami
+                    };
+                    img.src = photoData;
+                }else{
+                    console.warn('Brak zdjęcia w localStorage');
+                }
             };
         };
     </script>
