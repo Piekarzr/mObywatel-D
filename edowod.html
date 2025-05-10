@@ -49,7 +49,7 @@
                     photo.onload = function() {
                         ctx.drawImage(photo, 850, 50, 200, 250); // Zastąp odpowiednimi współrzędnymi i rozmiarami
                     };
-                    img.src = photoData;
+                    photo.src = photoData;
                 }else{
                     console.warn('Brak zdjęcia w localStorage');
                 }
