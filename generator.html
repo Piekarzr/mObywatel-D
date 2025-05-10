@@ -44,22 +44,34 @@
         </form>
     </div>
     <script>
-        document.getElementById('edowod-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const params = new URLSearchParams();
-            formData.forEach((value, key) => {
-                params.append(key, value);
-            });
+document.getElementById('edowod-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const obj = {};
 
-            const photo = formData.get('photo');
-            const reader = new FileReader();
-            reader.onload = function() {
-                params.append('photo', reader.result);
-                window.location.href = 'edowod.html?' + params.toString();
-            };
-            reader.readAsDataURL(photo);
-        });
-    </script>
+  // Zbieramy wszystkie pola tekstowe z formularza
+  formData.forEach((value, key) => {
+    if (key !== 'photo') obj[key] = value;
+  });
+
+  // Obsługa pliku zdjęcia
+  const file = formData.get('photo');
+  if (file && file.type.match('image.*')) {
+    const reader = new FileReader();
+    reader.onload = function() {
+      obj.photo = reader.result;                   // DataURL
+      // Zapisujemy cały obiekt jako JSON w localStorage
+      localStorage.setItem('edowodData', JSON.stringify(obj));
+      // Przekierowujemy na edowod.html (bez parametrów)
+      window.location.href = 'edowod.html';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // Jeśli brak zdjęcia — też zapisujemy i przekierowujemy
+    localStorage.setItem('edowodData', JSON.stringify(obj));
+    window.location.href = 'edowod.html';
+  }
+});
+</script>
 </body>
 </html>
